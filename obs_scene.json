@@ -1,0 +1,52 @@
+{
+    "obs_version": "30.0.0",
+    "description": "Zen Stream — Fractal meditation scene for OBS",
+    "instructions": [
+        "1. Install OBS Studio: https://obsproject.com/",
+        "2. Install obs-shadertastic plugin: https://github.com/xurei/obs-shadertastic",
+        "3. Open OBS → Scene Collection → Import → select this file's scene config",
+        "4. Or manually create the scene following the setup_obs.md guide"
+    ],
+    "scene_collection": {
+        "name": "Zen Stream",
+        "scenes": [
+            {
+                "name": "Fractal Meditation",
+                "sources": [
+                    {
+                        "name": "Fractal Shader",
+                        "type": "shadertastic_filter",
+                        "settings": {
+                            "shader_file": "zen_fractal.effect.hlsl",
+                            "params": {
+                                "speed": 0.3,
+                                "zoom": 1.0,
+                                "color_shift": 0.0,
+                                "complexity": 0.7,
+                                "palette": "zen"
+                            }
+                        },
+                        "notes": "Apply shadertastic filter to a Color Source"
+                    },
+                    {
+                        "name": "Zen Audio",
+                        "type": "ffmpeg_source",
+                        "settings": {
+                            "local_file": "output/zen_meditation.wav",
+                            "looping": true,
+                            "restart_on_activate": true
+                        },
+                        "notes": "Load the generated WAV file, set to loop"
+                    }
+                ],
+                "stream_settings": {
+                    "service": "YouTube - RTMP",
+                    "resolution": "1920x1080",
+                    "fps": 30,
+                    "bitrate_video": 4500,
+                    "bitrate_audio": 128
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,32 @@
+# Output
+output/
+*.mp4
+*.wav
+presets.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# PPM frames (intermediários)
+*_frames/
+*.ppm
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# YouTube API (NUNCA commitar credenciais)
+client_secrets.json
+token.pickle
