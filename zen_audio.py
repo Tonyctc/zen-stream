@@ -226,7 +226,7 @@ class SmoothNoise:
 class RichOscillator:
     """Multi-waveform oscillator with vibrato and FM."""
 
-    def __init__(self, freq, waveform='sine', detune_cents=0, sample_rate=SAMPLE_RATE):
+    def __init__(self, freq, waveform='sine', detune_cents=0.0, sample_rate=SAMPLE_RATE):
         self.freq = freq * (2.0 ** (detune_cents / 1200.0))
         self.phase = 0.0
         self.sample_rate = sample_rate

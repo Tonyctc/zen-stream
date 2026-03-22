@@ -61,6 +61,30 @@ python3 zen_stream.py --audio-only -d 3600 -m sleep
 python3 zen_stream.py --video-only -d 3600 -t julia -p zen
 ```
 
+## Áudio v2 — O que mudou
+
+O gerador de áudio foi completamente reescrito. Resultado: áudio profissional que não parece "sintético".
+
+| Recurso | v1 (antes) | v2 (agora) |
+|---|---|---|
+| Canais | Mono | **Estéreo** com largura espacial |
+| Reverb | Nenhuma | **Schroeder** (4 comb + 2 allpass) |
+| Ondas | Senoide pura | **Warm saw, triangle, FM, vibrato** |
+| Binaural | Não | **Sim** — delta/theta/alpha por modo |
+| Filtros | 1-pole básico | **Biquad LP com ressonância** |
+| Efeitos | Nenhum | **Chorus estéreo** |
+| Sinos | Harmônicos simples | **Singing bowls com parciais inarmônicos** |
+| Natureza | Vento+ruido | **Vento + chuva + gotas com pitch glide** |
+| Afinação | 440Hz fixo | **432Hz padrão** (configurável) |
+
+### Binaural beats por modo
+| Modo | Frequência | Efeito |
+|---|---|---|
+| meditation | 6Hz (Theta) | Relaxamento profundo |
+| sleep | 2Hz (Delta) | Sono profundo |
+| focus | 10Hz (Alpha) | Concentração alerta |
+| nature | 7.83Hz | Ressonância Schumann |
+
 ## Presets
 
 | Preset | Fractal | Paleta | Áudio | Resolução | Duração |
@@ -84,6 +108,7 @@ python3 zen_stream.py --video-only -d 3600 -t julia -p zen
 -t, --type        Fractal (julia/mandelbrot/plasma)
 -p, --palette     Paleta (zen/aurora/ember/ocean)
 -m, --mode        Áudio (meditation/sleep/focus/nature)
+--tuning          Frequência base em Hz (padrão: 432)
 -i, --iterations  Máx iterações do fractal
 --audio-only      Gerar apenas áudio
 --video-only      Gerar apenas vídeo
@@ -94,13 +119,14 @@ python3 zen_stream.py --video-only -d 3600 -t julia -p zen
 
 ```
 zen-stream/
-├── zen_audio.py               # Gerador de áudio zen procedural
+├── zen_audio.py               # Gerador de áudio procedural v2
 ├── fractal_video.py           # Gerador de frames fractais (PPM)
 ├── zen_stream.py              # Orquestrador principal
 ├── quickstart.sh              # Launcher rápido
 ├── zen_fractal.effect.hlsl    # Shader HLSL para OBS
 ├── setup_obs.md               # Guia de configuração do OBS
 ├── obs_scene.json             # Config de scene do OBS
+├── upload_youtube.py          # Upload YouTube (TODO v2.0)
 ├── README.md                  # Este arquivo
 ├── LICENSE                    # MIT License
 └── output/                    # Vídeos gerados (gitignored)
@@ -127,7 +153,7 @@ Para fazer lives com shader fractal ao vivo, veja o guia em [setup_obs.md](setup
 
 ## Roadmap
 
-### v1.0 — Atual
+### v1.0 — Completo
 - [x] Gerador de áudio zen procedural
 - [x] Gerador de vídeo fractal (Julia, Mandelbrot, Plasma)
 - [x] Orquestrador com presets
@@ -135,6 +161,15 @@ Para fazer lives com shader fractal ao vivo, veja o guia em [setup_obs.md](setup
 - [x] Modo loop infinito
 - [x] Suporte a ffmpeg para composição automática
 - [x] Shader HLSL para OBS
+
+### v1.5 — Áudio v2 (atual)
+- [x] Reverb Schroeder (comb + allpass)
+- [x] Áudio estéreo com chorus
+- [x] Binaural beats (delta/theta/alpha)
+- [x] Ondas ricas (warm saw, FM, vibrato)
+- [x] Singing bowls com parciais inarmônicos
+- [x] Camada de chuva + gotas com pitch glide
+- [x] Afinação 432Hz (configurável via --tuning)
 
 ### v2.0 — Próxima versão
 - [ ] **Upload automático para YouTube** via YouTube Data API v3
