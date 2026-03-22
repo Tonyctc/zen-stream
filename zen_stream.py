@@ -87,6 +87,7 @@ def generate_one(config, output_dir, ffmpeg_path, keep_frames=False, upload=Fals
     iterations = config.get('iterations', 80)
     fps = config.get('fps', 24)
     duration = config.get('duration', 10)
+    tuning = config.get('tuning', 432)
     title = config.get('title', 'Zen Stream')
 
     os.makedirs(output_dir, exist_ok=True)
@@ -102,12 +103,12 @@ def generate_one(config, output_dir, ffmpeg_path, keep_frames=False, upload=Fals
     print(f"\n{'#'*60}")
     print(f"  GENERATING: {title}")
     print(f"  Duration: {duration}s | Resolution: {resolution}")
-    print(f"  Fractal: {t_type} | Palette: {palette} | Audio: {mode}")
+    print(f"  Fractal: {t_type} | Palette: {palette} | Audio: {mode} ({tuning}Hz)")
     print(f"{'#'*60}")
 
-    print(f"\n[1/3] Generating audio ({mode})...")
+    print(f"\n[1/3] Generating audio ({mode}, {tuning}Hz)...")
     from zen_audio import write_wav
-    write_wav(audio_file, duration, mode)
+    write_wav(audio_file, duration, mode, tuning)
 
     # ─── Step 2: Video ────────────────────────────────────────
     print(f"\n[2/3] Generating video frames...")
@@ -360,6 +361,8 @@ Examples:
                         choices=['meditation', 'sleep', 'focus', 'nature'])
     parser.add_argument('-i', '--iterations', type=int, default=None)
     parser.add_argument('-f', '--fps', type=int, default=None)
+    parser.add_argument('--tuning', type=float, default=432,
+                        help='Base tuning frequency in Hz (default: 432)')
 
     # Output
     parser.add_argument('-o', '--output', type=str, default=None,
@@ -426,13 +429,14 @@ Examples:
         config['iterations'] = args.iterations
     if args.fps is not None:
         config['fps'] = args.fps
+    config['tuning'] = args.tuning
 
     # Audio-only mode
     if args.audio_only:
         os.makedirs(args.output_dir, exist_ok=True)
         audio_file = os.path.join(args.output_dir, f'zen_{config["mode"]}.wav')
         from zen_audio import write_wav
-        write_wav(audio_file, config['duration'], config['mode'])
+        write_wav(audio_file, config['duration'], config['mode'], config.get('tuning', 432))
         return
 
     # Video-only mode
